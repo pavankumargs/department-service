@@ -29,4 +29,20 @@ public class DepartmentService {
 	public List<Department> getAllDepartments() {
 		return departmentRepository.findAll();
 	}
+
+	public Department updateDepartmentById(Long id, Department department) {
+		Department existingDepartment = departmentRepository.findById(id)
+				.orElseThrow(() -> new DepartmentNotFoundException("Department Not Found"));
+		existingDepartment.setDepartmentName(department.getDepartmentName());
+		existingDepartment.setDepartmentCode(department.getDepartmentCode());
+		existingDepartment.setLocation(department.getLocation());
+		existingDepartment.setStatus(department.getStatus());
+		return departmentRepository.save(existingDepartment);
+	}
+
+	public void deleteDepartment(Long id) {
+		Department department = departmentRepository.findById(id)
+				.orElseThrow(() -> new DepartmentNotFoundException("Department Not Found"));
+		departmentRepository.delete(department);
+	}
 }
