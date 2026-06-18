@@ -3,6 +3,7 @@ package com.pavan.microservices.employee.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pavan.microservices.department.entity.Department;
 
 import jakarta.persistence.Entity;
@@ -33,6 +34,7 @@ public class Employee {
 
 	@ManyToOne
 	@JoinColumn(name = "department_id")
+	@JsonIgnore
 	private Department department;
 
 	public Employee() {

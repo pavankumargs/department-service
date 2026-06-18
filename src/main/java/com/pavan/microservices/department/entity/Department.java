@@ -15,7 +15,7 @@ import jakarta.persistence.PreUpdate;
 
 @Entity
 public class Department {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long departmentId;
@@ -25,7 +25,7 @@ public class Department {
 	private String status;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-	
+
 	@OneToMany(mappedBy = "department")
 	private List<Employee> employees;
 
@@ -99,19 +99,27 @@ public class Department {
 		this.updatedAt = updatedAt;
 	}
 
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
+
 	@Override
 	public String toString() {
 		return "Department [departmentId=" + departmentId + ", departmentCode=" + departmentCode + ", departmentName="
 				+ departmentName + ", location=" + location + ", status=" + status + ", createdAt=" + createdAt
 				+ ", updatedAt=" + updatedAt + "]";
 	}
-	
+
 	@PrePersist
 	public void prePersist() {
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
 	}
-	
+
 	@PreUpdate
 	public void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
