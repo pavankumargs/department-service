@@ -1,5 +1,6 @@
 package com.pavan.microservices.employee.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.pavan.microservices.department.entity.Department;
 import com.pavan.microservices.department.exception.DepartmentNotFoundException;
 import com.pavan.microservices.department.exception.EmployeeNotFoundException;
 import com.pavan.microservices.department.repository.DepartmentRepository;
+import com.pavan.microservices.employee.dto.EmployeeResponseDTO;
 import com.pavan.microservices.employee.entity.Employee;
 import com.pavan.microservices.employee.repository.EmployeeRepository;
 
@@ -28,13 +30,33 @@ public class EmployeeService {
 		return employeeRepository.save(employee);
 	}
 
-	public Employee getEmployeeById(Long id) {
-		return employeeRepository.findById(id)
+	public EmployeeResponseDTO getEmployeeById(Long id) {
+
+		Employee employee = employeeRepository.findById(id)
 				.orElseThrow(() -> new EmployeeNotFoundException("Employee ID Not Found"));
+
+		EmployeeResponseDTO employeeDTO = new EmployeeResponseDTO();
+
+		employeeDTO.setEmployeeId(employee.getEmployeeId());
+		employeeDTO.setEmployeeName(employee.getEmployeeName());
+		employeeDTO.setEmail(employee.getEmail());
+		employeeDTO.setDepartmentName(employee.getDepartment().getDepartmentName());
+		return employeeDTO;
 	}
 
-	public List<Employee> getAllEmployees() {
-		return employeeRepository.findAll();
+	public List<EmployeeResponseDTO> getAllEmployees() {
+		 List<Employee> employees = employeeRepository.findAll();
+		 
+		 List<EmployeeResponseDTO> emplist = new ArrayList<>();
+		 for(Employee emp : employees) {
+			 EmployeeResponseDTO employeeDTO = new EmployeeResponseDTO();
+			 employeeDTO.setEmployeeId(emp.getEmployeeId());
+			 employeeDTO.setEmployeeName(emp.getEmployeeName());
+			 employeeDTO.setEmail(emp.getEmail());
+			 employeeDTO.setDepartmentName(emp.getDepartment().getDepartmentName());
+			 emplist.add(employeeDTO);
+		 }
+		 return emplist;
 	}
 
 	public Employee updateEmployee(Long id, Employee employee) {
@@ -66,9 +88,10 @@ public class EmployeeService {
 		}
 		return employeeRepository.save(existingEmployee);
 	}
-	
+
 	public void deleteEmployeeById(Long id) {
-		Employee employee = employeeRepository.findById(id).orElseThrow(()->new EmployeeNotFoundException("Employee Not Found"));
+		Employee employee = employeeRepository.findById(id)
+				.orElseThrow(() -> new EmployeeNotFoundException("Employee Not Found"));
 		employeeRepository.delete(employee);
 	}
 }
