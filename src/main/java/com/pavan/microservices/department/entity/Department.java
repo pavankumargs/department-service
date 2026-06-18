@@ -1,11 +1,15 @@
 package com.pavan.microservices.department.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.pavan.microservices.employee.entity.Employee;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
@@ -21,6 +25,9 @@ public class Department {
 	private String status;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+	
+	@OneToMany(mappedBy = "department")
+	private List<Employee> employees;
 
 	public Department() {
 	}
