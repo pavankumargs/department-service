@@ -16,6 +16,8 @@ import com.pavan.microservices.employee.dto.EmployeeResponseDTO;
 import com.pavan.microservices.employee.entity.Employee;
 import com.pavan.microservices.employee.service.EmployeeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -24,7 +26,7 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 
 	@PostMapping("/{departmentId}")
-	public Employee saveEmployee(@RequestBody Employee employee, @PathVariable Long departmentId) {
+	public Employee saveEmployee(@Valid @RequestBody Employee employee, @PathVariable Long departmentId) {
 		return employeeService.saveEmployee(employee, departmentId);
 	}
 
@@ -40,7 +42,7 @@ public class EmployeeController {
 	}
 
 	@PutMapping("/{id}")
-	public Employee updateEmployeeById(@RequestBody Employee employee, @PathVariable Long id) {
+	public Employee updateEmployeeById(@Valid @RequestBody Employee employee, @PathVariable Long id) {
 		return employeeService.updateEmployee(id, employee);
 	}
 

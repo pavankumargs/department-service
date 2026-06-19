@@ -14,6 +14,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PrePersist;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class Employee {
@@ -21,11 +25,19 @@ public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long employeeId;
+
+	@NotBlank(message = "Employee Name is Required")
 	private String employeeName;
+
+	@Email(message = "Please Enter Valid EmilID")
 	private String email;
+	
+	@NotNull(message="Salary is required")
 	private Double salary;
 	private String status;
 	private String employeeCode;
+	
+	@Pattern(regexp = "^[0-9]{10}$", message = "Phone Number Must Contain Exactly 10 Digits")
 	private String phoneNumber;
 	private String designation;
 	private LocalDate joiningDate;
